@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+        src: ['js/**/*.js', 'test/**/*.js']
       }
     },
     sass: {
@@ -78,9 +78,9 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+      js: {
+        files: 'js/**/*.js',
+        tasks: ['jshint:lib_test']
       },
       sass: {
         files: 'scss/**/*.scss',
