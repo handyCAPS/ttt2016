@@ -11,8 +11,16 @@
 
     <h1>Let's play TicTacToe!</h1>
 
-    <button type="button" id="startButton">Start</button>
-    <button type="button" id="resetButton">Reset</button>
+    <section class="buttonWrap">
+        <button type="button" id="resetButton">Reset</button>
+        <form action="/">
+            <section class="radioWrap">
+                <label>Players</label>
+                <input type="radio" name="players" checked="checked">1
+                <input type="radio" name="players">2
+            </section>
+        </form>
+    </section>
 
     <div class="boardWrap">
 

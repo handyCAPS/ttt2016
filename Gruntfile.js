@@ -40,13 +40,14 @@ module.exports = function(grunt) {
         noarg: true,
         sub: true,
         undef: true,
-        unused: true,
+        unused: false,
         boss: true,
         eqnull: true,
         browser: true,
         globals: {
           jQuery: true,
-          require: true
+          require: true,
+          console: true
         }
       },
       gruntfile: {
