@@ -1,0 +1,13 @@
+
+
+@mixin shadow() {
+    box-shadow: 0 0 12px rgba(0,0,0,0.12);
+}
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: " ";
+    display: block;
+  }
+}

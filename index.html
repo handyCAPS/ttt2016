@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Dancing+Script|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <title>TicTacToe</title>
 </head>
@@ -11,15 +12,19 @@
 
     <h1>Let's play TicTacToe!</h1>
 
-    <section class="buttonWrap">
-        <button type="button" id="resetButton">Reset</button>
-        <form action="/">
-            <section class="radioWrap">
-                <label>Players</label>
-                <input type="radio" name="players" checked="checked">1
-                <input type="radio" name="players">2
-            </section>
-        </form>
+    <section class="settingsWrap">
+        <h3 class="settingsHeader">Settings</h3>
+        <hr>
+        <h4 class="playerSelectionHeader">Players</h4>
+        <div class="playerSelectionWrap">
+            <div class="playerSelection onePlayer selected">1</div>
+            <div class="sliderWrap">
+                <div class="slider"></div>
+            </div>
+            <div class="playerSelection twoPlayer">2</div>
+        </div>
+        <hr>
+        <div class="buttonWrap"><button type="button" id="resetButton" class="button">Reset</button></div>
     </section>
 
     <div class="boardWrap">

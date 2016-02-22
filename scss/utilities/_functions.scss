@@ -1,0 +1,24 @@
+
+
+@function modScale($n, $base: 1, $ratio: 1.618) {
+
+    $total: $base;
+
+    @if $n > 0 {
+        @for $i from 1 through $n {
+            $total: $total * $ratio;
+        }
+    }
+
+    @if $n < 0 {
+        @for $i from 0 through $n + 1 {
+            $total: $total / $ratio;
+        }
+    }
+
+    @return $total;
+}
+
+@function strip-units($value) {
+    @return $value / ($value * 0 + 1);
+}

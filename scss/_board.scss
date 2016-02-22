@@ -2,17 +2,47 @@
 
 .boardWrap {
     position: relative;
+    @include span(6);
 }
 
 .board {
     width: 300px;
     margin: 0 auto;
+    @include shadow();
+    @include clearfix();
 }
 
 .tile {
     width: 98px;
     height: 98px;
-    border: 1px solid black;
+    border: 1px solid $lightGrey;
     float: left;
     cursor: pointer;
+    background-color: #fff;
+    background-image: none;
+    transition: 0.3s;
+        &:nth-child(-n+3) {
+            border-top: none;
+        }
+        &:nth-child(3n+1) {
+            border-left: none;
+        }
+        &:nth-child(3n+3) {
+            border-right: none;
+        }
+        &:nth-last-child(-n+3) {
+            border-bottom: none;
+        }
+}
+
+.tileX {
+    background-color: $xColor;
+    background-image: url(../img/circle.svg);
+    background-size: cover;
+}
+
+.tileY {
+    background-color: $yColor;
+    background-image: url(../img/cross.svg);
+    background-size: cover;
 }
