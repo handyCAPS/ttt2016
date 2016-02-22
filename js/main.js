@@ -28,6 +28,10 @@ var winLines = [
 
 var boardMatrix, closingTiles;
 
+function pushUnique(array, value) {
+    if (array.indexOf(value) === -1) { array.push(value); }
+}
+
 function initBoard() {
     boardMatrix = [
         {
@@ -97,10 +101,11 @@ function checkRow(row) {
             nullTiles.push(tileNum);
         }
     }
-    if (hasChance) {
-        if (closingTiles[firstOwner].indexOf(nullTiles[0]) === -1) {
-            closingTiles[firstOwner].push(parseInt(nullTiles[0]));
-        }
+    if (hasChance && nullTiles.length === 1) {
+        var firstTile = parseInt(nullTiles[0]);
+        // if (!isNan(firstTile)) {
+            pushUnique(closingTiles[firstOwner], firstTile);
+        // }
     }
 }
 
@@ -110,7 +115,7 @@ function setMatrix(num, owner) {
         var first = null;
         setTileOnRow(row, prop, owner);
         checkRow(row);
-        console.dir(closingTiles);
+        console.log(closingTiles[player * 1]);
     });
     // console.dir(boardMatrix);
 }
@@ -126,7 +131,7 @@ var tiles = (function() {
             return allTiles;
         },
         getByDataTile: function(no) {
-            return get('[data-tile="' + no + '"]');
+            return get('[data-tile="' + no + '"]')[0];
         },
         reset: function() {
             [].forEach.call(allTiles, function(v) {
@@ -162,8 +167,10 @@ var tiles = (function() {
         setRandom: function() {
             waiting = false;
             if (!gameOver) {
-                if (closingTiles[player * 1].length > 0) {
-                    this.set(this.getByDataTile(closingTiles[!player * 1][0]));
+                if (closingTiles[!player * 1].length > 0) {
+                    var setTile = closingTiles[!player * 1][0];
+                    this.set(this.getByDataTile(setTile));
+                    console.log('Splice tile ' + closingTiles[!player * 1].splice(closingTiles[!player * 1].indexOf(setTile),1)[0]);
                 } else {
                     this.set(this.getRandom());
                 }
