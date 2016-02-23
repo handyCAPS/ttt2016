@@ -141,6 +141,7 @@ var tiles = (function() {
             started = false;
             gameOver = false;
             initBoard();
+            this.flash();
         },
         getSelected: function(other) {
             return [].filter.call(allTiles, function(tile) {
@@ -191,6 +192,15 @@ var tiles = (function() {
                 });
             }
             gameOver = this.getSelected(true).length === 0 || same === true;
+        },
+        flash: function() {
+            var flashClass = 'tileFlash';
+            [].forEach.call(allTiles, function(v, i) {
+                window.setTimeout(function() {
+                    v.classList.add(flashClass);
+                    window.setTimeout(function() { v.classList.remove(flashClass); }, 400);
+                }, 50 * i || 1);
+            });
         }
     };
 }());
@@ -208,7 +218,7 @@ var tiles = (function() {
     });
 });
 
-get('#resetButton').addEventListener('click', tiles.reset);
+get('#resetButton').addEventListener('click', tiles.reset.bind(tiles));
 
 get('.sliderWrap')[0].addEventListener('click', function(event) {
     get('.slider')[0].classList.toggle('flright');
