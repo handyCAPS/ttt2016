@@ -8,7 +8,8 @@ var player = true,
     gameOver = false,
     waiting = false,
     singlePlayer = true,
-    plyr;
+    plyr,
+    winningLine;
 
 var players = [
     [],
@@ -79,6 +80,7 @@ function initBoard() {
         0: [],
         1: []
     };
+    winningLine = [];
 }
 
 function setTileOnRow(row, tile, owner) {
@@ -89,6 +91,10 @@ function checkRow(row) {
     var firstOwner = null, nullTiles = [], hasChance = false;
     for (var tileNum in row) {
         var val = row[tileNum];
+        if (hasChance && firstOwner === val) {
+            winningLine = row;
+            gameOver = true;
+        }
         if (val !== null) {
             if (firstOwner === null) {
                 firstOwner = val;
@@ -115,7 +121,7 @@ function setMatrix(num, owner) {
         var first = null;
         setTileOnRow(row, prop, owner);
         checkRow(row);
-        console.log(closingTiles[player * 1]);
+        console.log(winningLine);
     });
     // console.dir(boardMatrix);
 }
@@ -153,7 +159,7 @@ var tiles = (function() {
             return pool[Math.floor(Math.random() * pool.length)];
         },
         set: function(selected) {
-            if (!gameOver) {
+            if (!gameOver && !selected.isSet) {
                 var tileNum = parseInt(selected.dataset.tile);
                 plyr = player * 1;
                 selected.classList.add(['tileX', 'tileY'][plyr]);
@@ -163,15 +169,19 @@ var tiles = (function() {
                 players[plyr].push(tileNum);
                 setMatrix(tileNum, plyr);
             }
-            // this.check(plyr);
+            if (gameOver) {
+                console.log('Gameover ' + Object.keys(winningLine));
+                this.flash([].concat.call(Object.keys(winningLine)));
+            }
         },
         setRandom: function() {
             waiting = false;
             if (!gameOver) {
-                if (closingTiles[!player * 1].length > 0) {
-                    var setTile = closingTiles[!player * 1][0];
+                var otherPlayer = !player * 1;
+                if (closingTiles[otherPlayer].length > 0) {
+                    var setTile = closingTiles[otherPlayer][0];
                     this.set(this.getByDataTile(setTile));
-                    console.log('Splice tile ' + closingTiles[!player * 1].splice(closingTiles[!player * 1].indexOf(setTile),1)[0]);
+                    closingTiles[otherPlayer].shift();
                 } else {
                     this.set(this.getRandom());
                 }
@@ -193,9 +203,10 @@ var tiles = (function() {
             }
             gameOver = this.getSelected(true).length === 0 || same === true;
         },
-        flash: function() {
+        flash: function(pool) {
             var flashClass = 'tileFlash';
             [].forEach.call(allTiles, function(v, i) {
+                if (pool && pool.indexOf(parseInt(v.dataset.tile)) === -1) { return; }
                 window.setTimeout(function() {
                     v.classList.add(flashClass);
                     window.setTimeout(function() { v.classList.remove(flashClass); }, 400);
