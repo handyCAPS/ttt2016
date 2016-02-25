@@ -47,7 +47,8 @@ module.exports = function(grunt) {
         globals: {
           jQuery: true,
           require: true,
-          console: true
+          console: true,
+          alert: true
         }
       },
       gruntfile: {
@@ -59,7 +60,7 @@ module.exports = function(grunt) {
     },
     sass: {
       options: {
-        style: 'compressed',
+        style: 'expanded',
         require: 'susy'
       },
       dev: {

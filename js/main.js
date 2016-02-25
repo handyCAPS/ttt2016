@@ -16,6 +16,11 @@ var players = [
     []
 ];
 
+var pieces = {
+    0: 'X',
+    1: 'O'
+};
+
 var winLines = [
     [1,2,3],
     [4,5,6],
@@ -109,21 +114,16 @@ function checkRow(row) {
     }
     if (hasChance && nullTiles.length === 1) {
         var firstTile = parseInt(nullTiles[0]);
-        // if (!isNan(firstTile)) {
-            pushUnique(closingTiles[firstOwner], firstTile);
-        // }
+        pushUnique(closingTiles[firstOwner], firstTile);
     }
 }
 
 function setMatrix(num, owner) {
     var prop = num.toString();
     boardMatrix.forEach(function(row, idx) {
-        var first = null;
         setTileOnRow(row, prop, owner);
         checkRow(row);
-        console.log(winningLine);
     });
-    // console.dir(boardMatrix);
 }
 
 
@@ -170,8 +170,7 @@ var tiles = (function() {
                 setMatrix(tileNum, plyr);
             }
             if (gameOver) {
-                console.log('Gameover ' + Object.keys(winningLine));
-                this.flash([].concat.call(Object.keys(winningLine)));
+                this.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
             }
         },
         setRandom: function() {
@@ -203,12 +202,13 @@ var tiles = (function() {
             }
             gameOver = this.getSelected(true).length === 0 || same === true;
         },
-        flash: function(pool) {
+        flash: function(pool, stay) {
             var flashClass = 'tileFlash';
             [].forEach.call(allTiles, function(v, i) {
                 if (pool && pool.indexOf(parseInt(v.dataset.tile)) === -1) { return; }
                 window.setTimeout(function() {
                     v.classList.add(flashClass);
+                    if (stay) { return; }
                     window.setTimeout(function() { v.classList.remove(flashClass); }, 400);
                 }, 50 * i || 1);
             });
