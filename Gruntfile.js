@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         curly: true,
         eqeqeq: true,
         immed: true,
-        latedef: true,
+        latedef: false,
         newcap: true,
         noarg: true,
         sub: true,
@@ -73,6 +73,14 @@ module.exports = function(grunt) {
         }]
       }
     },
+    postcss: {
+      options: {
+        processors: [require('autoprefixer')]
+      },
+      dist: {
+        src: 'css/**/*.css'
+      }
+    },
     watch: {
       options: {
         livereload: true
@@ -87,7 +95,7 @@ module.exports = function(grunt) {
       },
       sass: {
         files: 'scss/**/*.scss',
-        tasks: ['sass']
+        tasks: ['sass', 'postcss']
       },
       html: {
         files: '**/*.html'

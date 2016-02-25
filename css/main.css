@@ -448,6 +448,7 @@ hr {
   cursor: pointer;
   background-color: #fff;
   background-image: none;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 .tile:nth-child(-n+3) {
@@ -476,7 +477,9 @@ hr {
 }
 
 .tileFlash {
-  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+  box-shadow: inset 0 0 12px rgba(211, 25, 150, 0.5);
 }
 
 .settingsWrap {
@@ -511,21 +514,37 @@ hr {
 }
 
 .playerSelectionWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
 }
 
 .playerSelection {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   border: 1px solid #9CAFB2;
   height: 42px;
   width: calc(25% - 2px);
   color: rgba(0, 0, 0, 0.12);
   font-size: 1.618rem;
   margin-bottom: 1rem;
+  -webkit-transition: 0.3s 0.2s;
   transition: 0.3s 0.2s;
 }
 .playerSelection:first-of-type {
@@ -554,6 +573,7 @@ hr {
   width: 50%;
   height: 36px;
   background-color: #D31996;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 .slider.flright {
@@ -567,10 +587,16 @@ hr {
   left: 0;
   width: 100%;
   height: 36px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
   text-shadow: 2px 2px 1px #ed65c0;
 }
-
-/*# sourceMappingURL=main.css.map */

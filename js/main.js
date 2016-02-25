@@ -143,7 +143,12 @@ var tiles = (function() {
             [].forEach.call(allTiles, function(v) {
                 v.isSet = false;
                 v.classList.remove('tileX', 'tileY');
+                v.style = null;
             });
+            var winMessage = get('.winMessage');
+            if (winMessage.length > 0) {
+                winMessage[0].remove();
+            }
             started = false;
             gameOver = false;
             initBoard();
@@ -168,10 +173,11 @@ var tiles = (function() {
                 player = !player;
                 players[plyr].push(tileNum);
                 setMatrix(tileNum, plyr);
+                if (gameOver) {
+                    showWinner();
+                }
             }
-            if (gameOver) {
-                this.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
-            }
+            
         },
         setRandom: function() {
             waiting = false;
@@ -186,22 +192,6 @@ var tiles = (function() {
                 }
             }
         },
-        check: function(playr) {
-            var current, checked, same;
-            if (this.getSelected().length > 0) {
-                winLines.forEach(function(winLine) {
-                    var barrel = [];
-                    winLine.some(function(tile) {
-                        var idx = tile + 1, target = tiles.get(idx) || {}, owner = target.playerOwner;
-                        if (owner === undefined) { return true; }
-                        barrel.push(owner);
-                        // console.log(owner);
-                    });
-                    console.log(barrel);
-                });
-            }
-            gameOver = this.getSelected(true).length === 0 || same === true;
-        },
         flash: function(pool, stay) {
             var flashClass = 'tileFlash';
             [].forEach.call(allTiles, function(v, i) {
@@ -209,12 +199,19 @@ var tiles = (function() {
                 window.setTimeout(function() {
                     v.classList.add(flashClass);
                     if (stay) { return; }
-                    window.setTimeout(function() { v.classList.remove(flashClass); }, 400);
+                    window.setTimeout(function() {
+                        v.classList.remove(flashClass);
+                    }, 400);
                 }, 50 * i || 1);
             });
         }
     };
 }());
+
+function showWinner() {
+    tiles.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
+    get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>Player " + pieces[player*1] + " wins!</p>");
+}
 
 [].forEach.call(tiles.getAll(), function(v) {
     v.addEventListener('click', function() {
