@@ -11,26 +11,11 @@ var player = true,
     plyr,
     winningLine;
 
-var players = [
-    [],
-    []
-];
-
 var pieces = {
     0: 'X',
     1: 'O'
 };
 
-var winLines = [
-    [1,2,3],
-    [4,5,6],
-    [7,8,9],
-    [1,4,7],
-    [2,5,8],
-    [3,6,9],
-    [1,5,9],
-    [3,5,7]
-];
 
 var boardMatrix, closingTiles;
 
@@ -128,7 +113,9 @@ function setMatrix(num, owner) {
 
 
 var tiles = (function() {
-    var allTiles = get('.tile');
+    var allTiles = get('.tile'),
+        totalSet = 0,
+        totalTiles = allTiles.length;
     return {
         get: function(idx) {
             return allTiles[idx];
@@ -151,6 +138,7 @@ var tiles = (function() {
             }
             started = false;
             gameOver = false;
+            totalSet = 0;
             initBoard();
             this.flash();
         },
@@ -165,28 +153,33 @@ var tiles = (function() {
         },
         set: function(selected) {
             if (!gameOver && !selected.isSet) {
+                var noWinner = false;
                 var tileNum = parseInt(selected.dataset.tile);
                 plyr = player * 1;
                 selected.classList.add(['tileX', 'tileY'][plyr]);
                 selected.isSet = true;
                 selected.playerOwner = plyr;
                 player = !player;
-                players[plyr].push(tileNum);
+                totalSet++;
                 setMatrix(tileNum, plyr);
+                if (totalSet === totalTiles) { gameOver = true; noWinner = true; }
                 if (gameOver) {
-                    showWinner();
+                    showWinner(noWinner);
                 }
             }
-            
+
         },
         setRandom: function() {
             waiting = false;
             if (!gameOver) {
-                var otherPlayer = !player * 1;
-                if (closingTiles[otherPlayer].length > 0) {
-                    var setTile = closingTiles[otherPlayer][0];
+                var otherPlayer = !player * 1,
+                    canI = closingTiles[player * 1].length > 0,
+                    canHe = closingTiles[otherPlayer].length > 0;
+                if (canI || canHe) {
+                    var oneWhoKnocks = canI ? player * 1 : otherPlayer;
+                    var setTile = closingTiles[oneWhoKnocks][0];
                     this.set(this.getByDataTile(setTile));
-                    closingTiles[otherPlayer].shift();
+                    closingTiles[oneWhoKnocks].shift();
                 } else {
                     this.set(this.getRandom());
                 }
@@ -208,9 +201,10 @@ var tiles = (function() {
     };
 }());
 
-function showWinner() {
+function showWinner(noWinner) {
+    var message = noWinner ? 'Nobody won. Try again ?' : "Player " + pieces[player*1] + " wins! Play again ?";
     tiles.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
-    get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>Player " + pieces[player*1] + " wins!</p>");
+    get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + "</p>");
 }
 
 [].forEach.call(tiles.getAll(), function(v) {
@@ -230,6 +224,7 @@ get('#resetButton').addEventListener('click', tiles.reset.bind(tiles));
 
 get('.sliderWrap')[0].addEventListener('click', function(event) {
     get('.slider')[0].classList.toggle('flright');
+    singlePlayer = !singlePlayer;
     [].forEach.call(get('.playerSelection'), function(v) {
         v.classList.toggle('selected');
     });
