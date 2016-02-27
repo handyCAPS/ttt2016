@@ -44,6 +44,7 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
+        jasmine: true,
         globals: {
           jQuery: true,
           require: true,
@@ -81,6 +82,20 @@ module.exports = function(grunt) {
         src: 'css/**/*.css'
       }
     },
+    jasmine: {
+      all: {
+        src: ['js/**/*.js'],
+        options: {
+          specs: 'tests/**/*.spec.js',
+          keepRunner: true
+        }
+      }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
+    },
     watch: {
       options: {
         livereload: true
@@ -90,8 +105,8 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       js: {
-        files: 'js/**/*.js',
-        tasks: ['jshint:lib_test']
+        files: ['js/**/*.js', 'tests/js/**/*.js'],
+        tasks: ['jshint:lib_test', 'jasmine']
       },
       sass: {
         files: 'scss/**/*.scss',

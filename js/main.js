@@ -111,6 +111,15 @@ function setMatrix(num, owner) {
     });
 }
 
+function popFromClosing(tl) {
+    for (var v in closingTiles) {
+        var idx = closingTiles[v].indexOf(tl);
+        if (idx !== -1) {
+            closingTiles[v].splice(idx, 1);
+        }
+    }
+}
+
 
 var tiles = (function() {
     var allTiles = get('.tile'),
@@ -159,9 +168,10 @@ var tiles = (function() {
                 selected.classList.add(['tileX', 'tileY'][plyr]);
                 selected.isSet = true;
                 selected.playerOwner = plyr;
+                setMatrix(tileNum, plyr);
+                popFromClosing(tileNum);
                 player = !player;
                 totalSet++;
-                setMatrix(tileNum, plyr);
                 if (totalSet === totalTiles) { gameOver = true; noWinner = true; }
                 if (gameOver) {
                     showWinner(noWinner);
@@ -179,7 +189,6 @@ var tiles = (function() {
                     var oneWhoKnocks = canI ? player * 1 : otherPlayer;
                     var setTile = closingTiles[oneWhoKnocks][0];
                     this.set(this.getByDataTile(setTile));
-                    closingTiles[oneWhoKnocks].shift();
                 } else {
                     this.set(this.getRandom());
                 }
@@ -202,9 +211,10 @@ var tiles = (function() {
 }());
 
 function showWinner(noWinner) {
-    var message = noWinner ? 'Nobody won. Try again ?' : "Player " + pieces[player*1] + " wins! Play again ?";
+    var message = noWinner ? 'Nobody won.' : "Player " + pieces[player*1] + " wins!";
     tiles.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
-    get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + "</p>");
+    get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + " <a href='#' class='resetBoard'>Play again ?</a></p>");
+    listenForReplay();
 }
 
 [].forEach.call(tiles.getAll(), function(v) {
@@ -221,6 +231,13 @@ function showWinner(noWinner) {
 });
 
 get('#resetButton').addEventListener('click', tiles.reset.bind(tiles));
+
+function listenForReplay() {
+    get('.resetBoard')[0].addEventListener('click', function(ev) {
+        ev.preventDefault();
+        tiles.reset();
+    });
+}
 
 get('.sliderWrap')[0].addEventListener('click', function(event) {
     get('.slider')[0].classList.toggle('flright');
