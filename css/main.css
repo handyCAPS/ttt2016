@@ -1,3 +1,6 @@
+/**
+ * HERE STARTS MY PART
+ */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -465,23 +468,37 @@ hr {
 }
 
 .tileX {
-  background-color: #D31996;
-  background-image: url(../img/circle.svg);
-  background-size: cover;
-}
-
-.tileY {
   background-color: #19DD89;
   background-image: url(../img/cross.svg);
   background-size: cover;
 }
 
-.tileFlash {
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
-  box-shadow: 0 0 1rem rgba(211, 25, 150, 0.5);
+.tileO {
+  background-color: #D31996;
+  background-image: url(../img/circle.svg);
+  background-size: cover;
 }
 
+.tileFlash {
+  -webkit-animation: twirl 1s ease-in infinite;
+          animation: twirl 1s ease-in infinite;
+}
+
+@-webkit-keyframes twirl {
+  50% {
+    -webkit-transform: scale(1.2) rotate(180deg);
+            transform: scale(1.2) rotate(180deg);
+    box-shadow: 0 0 1rem rgba(211, 25, 150, 0.5);
+  }
+}
+
+@keyframes twirl {
+  50% {
+    -webkit-transform: scale(1.2) rotate(180deg);
+            transform: scale(1.2) rotate(180deg);
+    box-shadow: 0 0 1rem rgba(211, 25, 150, 0.5);
+  }
+}
 .settingsWrap {
   width: 15.25424%;
   float: left;
@@ -599,4 +616,33 @@ hr {
       -ms-flex-pack: distribute;
           justify-content: space-around;
   text-shadow: 2px 2px 1px #ed65c0;
+}
+
+.piece {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+.piece.notThisOne::after {
+  content: '';
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.pieceSelectionWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
 }

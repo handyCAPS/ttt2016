@@ -3,18 +3,18 @@ function get(el) {
     return document['querySelector' + (el.indexOf('#') === 0 ? '' : 'All')](el);
 }
 
-var player = true,
+var player = false,
     started = false,
     gameOver = false,
     waiting = false,
     singlePlayer = true,
-    plyr,
-    winningLine;
+    winningLine,
+    pieceHasBeenSet = false;
 
-var pieces = {
-    0: 'X',
-    1: 'O'
-};
+var pieces = [
+    'X',
+    'O'
+];
 
 
 var boardMatrix, closingTiles;
@@ -138,13 +138,14 @@ var tiles = (function() {
         reset: function() {
             [].forEach.call(allTiles, function(v) {
                 v.isSet = false;
-                v.classList.remove('tileX', 'tileY');
+                v.classList.remove('tileX', 'tileO');
                 v.style = null;
             });
             var winMessage = get('.winMessage');
             if (winMessage.length > 0) {
                 winMessage[0].remove();
             }
+            if (!pieceHasBeenSet) { setPiece(); }
             started = false;
             gameOver = false;
             totalSet = 0;
@@ -164,18 +165,18 @@ var tiles = (function() {
             if (!gameOver && !selected.isSet) {
                 var noWinner = false;
                 var tileNum = parseInt(selected.dataset.tile);
-                plyr = player * 1;
-                selected.classList.add(['tileX', 'tileY'][plyr]);
+                var plyr = player * 1;
+                selected.classList.add(['tileX', 'tileO'][plyr]);
                 selected.isSet = true;
                 selected.playerOwner = plyr;
                 setMatrix(tileNum, plyr);
                 popFromClosing(tileNum);
-                player = !player;
                 totalSet++;
-                if (totalSet === totalTiles) { gameOver = true; noWinner = true; }
+                if (!winningLine.length && totalSet === totalTiles) { gameOver = true; noWinner = true; }
                 if (gameOver) {
                     showWinner(noWinner);
                 }
+                player = !player;
             }
 
         },
@@ -246,3 +247,22 @@ get('.sliderWrap')[0].addEventListener('click', function(event) {
         v.classList.toggle('selected');
     });
 });
+
+function listenForSetPiece() {
+    var pieces = get('.piece');
+    [].forEach.call(pieces, function(p, idx) {
+        p.addEventListener('click', function(ev) {
+            if (started) { return; }
+            ev.currentTarget.classList.remove('notThisOne');
+            pieces[!idx * 1].classList.add('notThisOne');
+            setPiece();
+            pieceHasBeenSet = true;
+        });
+    });
+}
+
+function setPiece() {
+    player = get('.pieceX.notThisOne').length > 0;
+}
+
+listenForSetPiece();

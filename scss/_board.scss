@@ -37,17 +37,23 @@
 
 .tileX {
     background-color: $xColor;
-    background-image: url(../img/circle.svg);
-    background-size: cover;
-}
-
-.tileY {
-    background-color: $yColor;
     background-image: url(../img/cross.svg);
     background-size: cover;
 }
 
+.tileO {
+    background-color: $yColor;
+    background-image: url(../img/circle.svg);
+    background-size: cover;
+}
+
 .tileFlash {
-    transform: scale(1.2);
-    box-shadow: 0 0 1rem rgba($purple, 0.5);
+    animation: twirl 1s ease-in infinite;
+}
+
+@keyframes twirl {
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        box-shadow: 0 0 1rem rgba($purple, 0.5);
+    }
 }

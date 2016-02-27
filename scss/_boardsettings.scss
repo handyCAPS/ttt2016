@@ -95,3 +95,28 @@ $sliderHeight: 42px;
             text-shadow: 2px 2px 1px lighten($purple, 20);
         }
 }
+
+.piece {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+        &.notThisOne {
+            // background-color: $fadedGrey!important;
+                &::after {
+                    content: '';
+                    width: 100px;
+                    height: 100px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-color: rgba(#FFF, 0.7);
+                }
+        }
+}
+
+.pieceSelectionWrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
