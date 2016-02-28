@@ -9,7 +9,8 @@ var player = false,
     waiting = false,
     singlePlayer = true,
     winningLine,
-    pieceHasBeenSet = false;
+    boardMatrix,
+    closingTiles;
 
 var pieces = [
     'X',
@@ -17,10 +18,17 @@ var pieces = [
 ];
 
 
-var boardMatrix, closingTiles;
-
 function pushUnique(array, value) {
     if (array.indexOf(value) === -1) { array.push(value); }
+}
+
+function checkForSetPiece() {
+    var ppiece = window.localStorage.getItem('playerPiece');
+    if (ppiece !== undefined) {
+        console.log('Player piece: ' + pieces[ppiece]);
+        get('.notThisOne')[0].classList.remove('notThisOne');
+        get('.piece' + pieces[!ppiece * 1])[0].classList.add('notThisOne');
+    }
 }
 
 function initBoard() {
@@ -145,7 +153,7 @@ var tiles = (function() {
             if (winMessage.length > 0) {
                 winMessage[0].remove();
             }
-            if (!pieceHasBeenSet) { setPiece(); }
+            setPiece();
             started = false;
             gameOver = false;
             totalSet = 0;
@@ -178,7 +186,6 @@ var tiles = (function() {
                 }
                 player = !player;
             }
-
         },
         setRandom: function() {
             waiting = false;
@@ -256,13 +263,15 @@ function listenForSetPiece() {
             ev.currentTarget.classList.remove('notThisOne');
             pieces[!idx * 1].classList.add('notThisOne');
             setPiece();
-            pieceHasBeenSet = true;
         });
     });
 }
 
 function setPiece() {
     player = get('.pieceX.notThisOne').length > 0;
+    window.localStorage.setItem('playerPiece', player * 1);
 }
 
+checkForSetPiece();
+setPiece();
 listenForSetPiece();
