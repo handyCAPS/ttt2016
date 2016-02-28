@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href='https://fonts.googleapis.com/css?family=Dancing+Script|Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Dancing+Script|Roboto|Cherry+Cream+Soda' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <title>TicTacToe</title>
 </head>
@@ -10,7 +10,7 @@
 
 <div class="outerWrap">
 
-    <h1>Let's play TicTacToe!</h1>
+    <h1 class="letsPlay">Let's play TicTacToe!</h1>
 
     <section class="settingsWrap">
         <h3 class="settingsHeader">Settings</h3>
@@ -26,8 +26,8 @@
         <hr>
         <h4 class="pieceSelectionHeader">Select Your Avatar</h4>
         <div class="pieceSelectionWrap">
-            <div class="pieceX piece tileX"></div>
-            <div class="pieceO piece tileO notThisOne"></div>
+            <div class="pieceX piece tileX" data-piece="X"></div>
+            <div class="pieceO piece tileO" data-piece="O"></div>
         </div>
         <hr>
         <div class="buttonWrap"><button type="button" id="resetButton" class="button">Reset</button></div>

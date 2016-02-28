@@ -409,7 +409,7 @@ body {
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding: 1rem;
+  padding: 0 1rem;
 }
 .outerWrap:after {
   content: " ";
@@ -423,6 +423,12 @@ h1, h2, h3, h4, h5, h6 {
 
 hr {
   color: #9CAFB2;
+}
+
+.letsPlay {
+  font-family: 'Cherry Cream Soda', sans-serif;
+  margin: 1.618rem 0 2.61792rem;
+  text-align: center;
 }
 
 .boardWrap {

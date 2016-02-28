@@ -10,7 +10,7 @@ body {
 
 .outerWrap {
     @include container(12);
-    padding: 1rem;
+    padding: 0 1rem;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -19,4 +19,10 @@ h1,h2,h3,h4,h5,h6 {
 
 hr {
     color: $lightGrey;
+}
+
+.letsPlay {
+    font-family: 'Cherry Cream Soda', sans-serif;
+    margin: modScale(1) + rem 0 modScale(2) + rem;
+    text-align: center;
 }

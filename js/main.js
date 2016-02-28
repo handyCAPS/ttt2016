@@ -22,15 +22,6 @@ function pushUnique(array, value) {
     if (array.indexOf(value) === -1) { array.push(value); }
 }
 
-function checkForSetPiece() {
-    var ppiece = window.localStorage.getItem('playerPiece');
-    if (ppiece !== undefined) {
-        console.log('Player piece: ' + pieces[ppiece]);
-        get('.notThisOne')[0].classList.remove('notThisOne');
-        get('.piece' + pieces[!ppiece * 1])[0].classList.add('notThisOne');
-    }
-}
-
 function initBoard() {
     boardMatrix = [
         {
@@ -153,7 +144,6 @@ var tiles = (function() {
             if (winMessage.length > 0) {
                 winMessage[0].remove();
             }
-            setPiece();
             started = false;
             gameOver = false;
             totalSet = 0;
@@ -255,23 +245,41 @@ get('.sliderWrap')[0].addEventListener('click', function(event) {
     });
 });
 
+
+function checkForSetPiece() {
+    var ppiece = window.localStorage.getItem('playerPiece');
+    if (ppiece !== undefined) {
+        player = !!pieces.indexOf(pieces[ppiece]);
+        setPieceClass();
+    }
+}
+
+
+function setPieceClass() {
+    var notThisOne = get('.notThisOne');
+    if (notThisOne.length) {
+        notThisOne[0].classList.remove('notThisOne');
+    }
+    get('.piece' + pieces[!player * 1])[0].classList.add('notThisOne');
+}
+
 function listenForSetPiece() {
-    var pieces = get('.piece');
-    [].forEach.call(pieces, function(p, idx) {
+    var piecesEls = get('.piece');
+    [].forEach.call(piecesEls, function(p, idx) {
         p.addEventListener('click', function(ev) {
             if (started) { return; }
-            ev.currentTarget.classList.remove('notThisOne');
-            pieces[!idx * 1].classList.add('notThisOne');
-            setPiece();
+            player = !!pieces.indexOf(ev.currentTarget.dataset.piece);
+            setPieceClass();
+            setPiecePersistance();
         });
     });
 }
 
-function setPiece() {
-    player = get('.pieceX.notThisOne').length > 0;
+function setPiecePersistance() {
     window.localStorage.setItem('playerPiece', player * 1);
 }
 
 checkForSetPiece();
-setPiece();
+setPieceClass();
+setPiecePersistance();
 listenForSetPiece();
