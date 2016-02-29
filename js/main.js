@@ -281,6 +281,7 @@ function listenForSetPiece() {
             player = !!pieces.indexOf(ev.currentTarget.dataset.piece);
             setPieceClass();
             setPiecePersistance();
+            setFavicon();
         });
     });
 }
@@ -296,6 +297,21 @@ function setPiecePersistance(get) {
 function showPieceIsSet(unhide) {
     get('.notThisOne')[0].classList[['add', 'remove'][!!unhide * 1]]('hidden');
 }
+
+function setFavicon() {
+    var img = ['cross', 'circle'][setPiecePersistance(true)];
+    var favLink = "<link rel='mask-icon' href='img/" + img + ".svg?v=" + Date.now() + "' class='favLink'>";
+    var favLinkPng = "<link rel='shortcut icon' type='image/png' href='img/" + img + ".png?v=" + Date.now() + "' class='favLink'>";
+    var setFav = get('.favLink');
+    if (setFav.length) {
+        [].forEach.call(setFav, function(f) {
+            f.remove();
+        });
+    }
+    get('head')[0].insertAdjacentHTML('beforeend', favLink + favLinkPng);
+}
+
+
 
 function startGame() {
     started = true;
