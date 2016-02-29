@@ -396,6 +396,10 @@ th {
   padding: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 html {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
@@ -427,6 +431,7 @@ hr {
 
 .letsPlay {
   font-family: 'Cherry Cream Soda', sans-serif;
+  font-size: 2.61792rem;
   margin: 1.618rem 0 2.61792rem;
   text-align: center;
 }

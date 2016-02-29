@@ -69,7 +69,7 @@ function initBoard() {
         0: [],
         1: []
     };
-    winningLine = [];
+    winningLine = false;
 }
 
 function setTileOnRow(row, tile, owner) {
@@ -147,6 +147,8 @@ var tiles = (function() {
             started = false;
             gameOver = false;
             totalSet = 0;
+            checkForSetPiece();
+            showPieceIsSet(true);
             initBoard();
             this.flash();
         },
@@ -170,7 +172,7 @@ var tiles = (function() {
                 setMatrix(tileNum, plyr);
                 popFromClosing(tileNum);
                 totalSet++;
-                if (!winningLine.length && totalSet === totalTiles) { gameOver = true; noWinner = true; }
+                if (winningLine === false && totalSet === totalTiles) { gameOver = true; noWinner = true; }
                 if (gameOver) {
                     showWinner(noWinner);
                 }
@@ -209,15 +211,23 @@ var tiles = (function() {
 }());
 
 function showWinner(noWinner) {
-    var message = noWinner ? 'Nobody won.' : "Player " + pieces[player*1] + " wins!";
-    tiles.flash(Object.keys(winningLine).map(function(v){return parseInt(v);}), true);
+    var winner, winLine = [];
+    if (!noWinner) {
+        for (var x in winningLine) {
+            winLine.push(x);
+            winner = winningLine[x];
+        }
+    }
+    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][winner];
+    var flashPool = winningLine !== false ? Object.keys(winningLine).map(function(v){return parseInt(v);}) : false;
+    tiles.flash(flashPool, true);
     get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + " <a href='#' class='resetBoard'>Play again ?</a></p>");
     listenForReplay();
 }
 
 [].forEach.call(tiles.getAll(), function(v) {
     v.addEventListener('click', function() {
-        if (!started) { started = true; initBoard(); }
+        if (!started) { startGame(); }
         if (!waiting && !this.isSet) {
             tiles.set(this);
             if (singlePlayer) {
@@ -275,8 +285,22 @@ function listenForSetPiece() {
     });
 }
 
-function setPiecePersistance() {
-    window.localStorage.setItem('playerPiece', player * 1);
+function setPiecePersistance(get) {
+    var key = 'playerPiece';
+    if (get) {
+        return window.localStorage.getItem(key);
+    }
+    window.localStorage.setItem(key, player * 1);
+}
+
+function showPieceIsSet(unhide) {
+    get('.notThisOne')[0].classList[['add', 'remove'][!!unhide * 1]]('hidden');
+}
+
+function startGame() {
+    started = true;
+    showPieceIsSet();
+    initBoard();
 }
 
 checkForSetPiece();
