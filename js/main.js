@@ -8,6 +8,7 @@ var player = false,
     gameOver = false,
     waiting = false,
     singlePlayer = true,
+    iAmO = false,
     winningLine,
     boardMatrix,
     closingTiles;
@@ -149,6 +150,7 @@ var tiles = (function() {
             totalSet = 0;
             checkForSetPiece();
             showPieceIsSet(true);
+            whoAmI();
             initBoard();
             this.flash();
         },
@@ -218,7 +220,7 @@ function showWinner(noWinner) {
             winner = winningLine[x];
         }
     }
-    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][winner];
+    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][!iAmO * 1];
     var flashPool = winningLine !== false ? Object.keys(winningLine).map(function(v){return parseInt(v);}) : false;
     tiles.flash(flashPool, true);
     get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + " <a href='#' class='resetBoard'>Play again ?</a></p>");
@@ -282,6 +284,7 @@ function listenForSetPiece() {
             setPieceClass();
             setPiecePersistance();
             setFavicon();
+            whoAmI();
         });
     });
 }
@@ -299,7 +302,8 @@ function showPieceIsSet(unhide) {
 }
 
 function setFavicon() {
-    var img = ['cross', 'circle'][setPiecePersistance(true)];
+    var imgIdx = setPiecePersistance(true) === undefined ? 0 : setPiecePersistance(true) * 1;
+    var img = ['cross', 'circle'][imgIdx];
     var favLink = "<link rel='mask-icon' href='img/" + img + ".svg?v=" + Date.now() + "' class='favLink'>";
     var favLinkPng = "<link rel='shortcut icon' type='image/png' href='img/" + img + ".png?v=" + Date.now() + "' class='favLink'>";
     var setFav = get('.favLink');
@@ -309,6 +313,11 @@ function setFavicon() {
         });
     }
     get('head')[0].insertAdjacentHTML('beforeend', favLink + favLinkPng);
+}
+
+function whoAmI() {
+    var p = setPiecePersistance(true);
+    iAmO = p !== undefined ? !!parseInt(p) : true;
 }
 
 
@@ -322,4 +331,6 @@ function startGame() {
 checkForSetPiece();
 setPieceClass();
 setPiecePersistance();
+whoAmI();
+setFavicon();
 listenForSetPiece();
