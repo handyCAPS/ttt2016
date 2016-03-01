@@ -320,8 +320,6 @@ function whoAmI() {
     iAmO = p !== undefined ? !!parseInt(p) : true;
 }
 
-
-
 function startGame() {
     started = true;
     showPieceIsSet();
