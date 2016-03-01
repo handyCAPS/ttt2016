@@ -23,12 +23,15 @@ function animate(el, stylesObject, time, callback) {
 
     var nuPos = startPos;
 
+    var lastProgress = 0;
+
     function step(timestamp) {
         if (!startTime) { startTime = timestamp; }
         var progress = timestamp - startTime;
-        nuPos += distancePerFrame;
-        el.style[stylesArray[0]] = nuPos + unit;
-        if (Math.floor(progress) < time) {
+        nuPos += (distancePerFrame * (Math.round((progress - lastProgress) / (16.666666666666668))));
+        lastProgress = progress;
+        el.style[stylesArray[0]] = Math.round(nuPos) + unit;
+        if (Math.floor(progress) < time && nuPos < unitLess) {
             window.requestAnimationFrame(step);
         } else {
             el.style[stylesArray[0]] = stylesObject[stylesArray[0]];
