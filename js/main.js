@@ -220,27 +220,31 @@ function showWinner(noWinner) {
             winner = winningLine[x];
         }
     }
-    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][!iAmO * 1];
+    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][iAmO];
     var flashPool = winningLine !== false ? Object.keys(winningLine).map(function(v){return parseInt(v);}) : false;
     tiles.flash(flashPool, true);
     get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + " <a href='#' class='resetBoard'>Play again ?</a></p>");
     listenForReplay();
 }
 
-[].forEach.call(tiles.getAll(), function(v) {
-    v.addEventListener('click', function() {
-        if (!started) { startGame(); }
-        if (!waiting && !this.isSet) {
-            tiles.set(this);
-            if (singlePlayer) {
-                waiting = true;
-                window.setTimeout(tiles.setRandom.bind(tiles), 500);
+function listenForTiles() {
+    [].forEach.call(tiles.getAll(), function(v) {
+        v.addEventListener('click', function() {
+            if (!started) { startGame(); }
+            if (!waiting && !this.isSet) {
+                tiles.set(this);
+                if (singlePlayer) {
+                    waiting = true;
+                    window.setTimeout(tiles.setRandom.bind(tiles), 500);
+                }
             }
-        }
+        });
     });
-});
+}
 
-get('#resetButton').addEventListener('click', tiles.reset.bind(tiles));
+function listenForResetButton() {
+    get('#resetButton').addEventListener('click', tiles.reset.bind(tiles));
+}
 
 function listenForReplay() {
     get('.resetBoard')[0].addEventListener('click', function(ev) {
@@ -249,13 +253,15 @@ function listenForReplay() {
     });
 }
 
-get('.sliderWrap')[0].addEventListener('click', function(event) {
-    get('.slider')[0].classList.toggle('flright');
-    singlePlayer = !singlePlayer;
-    [].forEach.call(get('.playerSelection'), function(v) {
-        v.classList.toggle('selected');
+function listenForMultiplayer() {
+    get('.sliderWrap')[0].addEventListener('click', function(event) {
+        get('.slider')[0].classList.toggle('flright');
+        singlePlayer = !singlePlayer;
+        [].forEach.call(get('.playerSelection'), function(v) {
+            v.classList.toggle('selected');
+        });
     });
-});
+}
 
 
 function checkForSetPiece() {
@@ -316,8 +322,8 @@ function setFavicon() {
 }
 
 function whoAmI() {
-    var p = setPiecePersistance(true);
-    iAmO = p !== undefined ? !!parseInt(p) : true;
+    // var p = setPiecePersistance(true);
+    iAmO = setPiecePersistance(true) === undefined ? 0 : setPiecePersistance(true) * 1;
 }
 
 function startGame() {
@@ -326,9 +332,15 @@ function startGame() {
     initBoard();
 }
 
-checkForSetPiece();
-setPieceClass();
-setPiecePersistance();
-whoAmI();
-setFavicon();
-listenForSetPiece();
+function init() {
+    listenForTiles();
+    listenForMultiplayer();
+    listenForResetButton();
+
+    checkForSetPiece();
+    setPieceClass();
+    setPiecePersistance();
+    whoAmI();
+    setFavicon();
+    listenForSetPiece();
+}
