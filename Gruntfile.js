@@ -105,8 +105,12 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       js: {
-        files: ['js/**/*.js', 'tests/js/**/*.js'],
+        files: ['js/**/*.js'],
         tasks: ['jshint:lib_test']
+      },
+      jsTest: {
+        files: ['tests/js/**/*.js'],
+        tasks: ['jasmine']
       },
       sass: {
         files: 'scss/**/*.scss',
