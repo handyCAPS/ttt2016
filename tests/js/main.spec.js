@@ -28,3 +28,16 @@ describe('Testing whoAmI', function() {
         expect(iAmO).toBe(0);
     });
 });
+
+describe('Testing utility functions', function() {
+    it('should add only unique values to an array', function() {
+        var testArray = [];
+        var testValue = 1;
+        pushUnique(testArray, testValue);
+        expect(testArray.length).toBe(1);
+        pushUnique(testArray, testValue);
+        expect(testArray.length).toBe(1);
+        pushUnique(testArray, testValue + 1);
+        expect(testArray.length).toBe(2);
+    });
+});

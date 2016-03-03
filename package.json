@@ -23,6 +23,7 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.7",
-    "load-grunt-tasks": "^3.4.0"
+    "load-grunt-tasks": "^3.4.0",
+    "nightwatch": "^0.8.16"
   }
 }
