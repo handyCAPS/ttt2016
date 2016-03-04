@@ -96,6 +96,15 @@ module.exports = function(grunt) {
         configFile: 'karma.conf.js'
       }
     },
+    nightwatch: {
+      options: {
+        standalone: true,
+        jar_version: '2.52.0',
+        jar_path: 'bin/selenium-server-standalone-2.52.0.jar',
+        jar_url: 'http://localhost/ttt2016/bin/selenium-server-standalone-2.52.0.jar',
+        src_folders: 'tests/nightwatch'
+      }
+    },
     watch: {
       options: {
         livereload: true
@@ -111,6 +120,10 @@ module.exports = function(grunt) {
       jsTest: {
         files: ['tests/js/**/*.js'],
         tasks: ['jasmine']
+      },
+      end2end: {
+        files: ['tests/nightwatch/**/*.js'],
+        tasks: ['nightwatch']
       },
       sass: {
         files: 'scss/**/*.scss',
