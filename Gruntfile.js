@@ -100,8 +100,9 @@ module.exports = function(grunt) {
       options: {
         standalone: true,
         jar_version: '2.52.0',
-        jar_path: 'bin/selenium-server-standalone-2.52.0.jar',
-        jar_url: 'http://localhost/ttt2016/bin/selenium-server-standalone-2.52.0.jar',
+        jar_path: 'selenium-server-standalone-2.52.0.jar',
+        jar_url: 'http://localhost/ttt2016/selenium-server-standalone-2.52.0.jar',
+        // config_path: 'nightwatch.json',
         src_folders: 'tests/nightwatch'
       }
     },
@@ -115,7 +116,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['js/**/*.js'],
-        tasks: ['jshint:lib_test']
+        tasks: ['jshint:lib_test', 'jasmine', 'nightwatch']
       },
       jsTest: {
         files: ['tests/js/**/*.js'],

@@ -8,7 +8,6 @@ var player = false,
     gameOver = false,
     waiting = false,
     singlePlayer = true,
-    iAmO = false,
     winningLine,
     boardMatrix,
     closingTiles;
@@ -150,7 +149,6 @@ var tiles = (function() {
             totalSet = 0;
             checkForSetPiece();
             showPieceIsSet(true);
-            whoAmI();
             initBoard();
             this.flash();
         },
@@ -212,6 +210,20 @@ var tiles = (function() {
     };
 }());
 
+function splitWinLine(winLine) {
+    var lineArray = [], winner;
+    for (var ln in winLine) {
+        lineArray.push(parseInt(ln));
+        if (winner === undefined) {
+            winner = winLine[ln];
+        }
+    }
+    return {
+        lineArray: lineArray,
+        winner: parseInt(winner)
+    };
+}
+
 function showWinner(noWinner) {
     var winner, winLine = [];
     if (!noWinner) {
@@ -220,7 +232,9 @@ function showWinner(noWinner) {
             winner = winningLine[x];
         }
     }
-    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][iAmO];
+    console.log(winner);
+    var mIdx = parseInt(setPiecePersistance(true)) === parseInt(winner) ? 0 : 1;
+    var message = noWinner ? 'Nobody won.' : ["You won!", "The damn computer won!!"][mIdx];
     var flashPool = winningLine !== false ? Object.keys(winningLine).map(function(v){return parseInt(v);}) : false;
     tiles.flash(flashPool, true);
     get('.board')[0].insertAdjacentHTML('afterend', "<p class='winMessage'>" + message + " <a href='#' class='resetBoard'>Play again ?</a></p>");
@@ -290,7 +304,6 @@ function listenForSetPiece() {
             setPieceClass();
             setPiecePersistance();
             setFavicon();
-            whoAmI();
         });
     });
 }
@@ -321,10 +334,6 @@ function setFavicon() {
     get('head')[0].insertAdjacentHTML('beforeend', favLink + favLinkPng);
 }
 
-function whoAmI() {
-    // var p = setPiecePersistance(true);
-    iAmO = setPiecePersistance(true) === undefined ? 0 : setPiecePersistance(true) * 1;
-}
 
 function startGame() {
     started = true;
@@ -340,7 +349,6 @@ function init() {
     checkForSetPiece();
     setPieceClass();
     setPiecePersistance();
-    whoAmI();
     setFavicon();
     listenForSetPiece();
 }
